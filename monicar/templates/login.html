@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+    {% if current_user.is_authenticated %}
+         <div class="alert alert-success"><h4>Hello, <a href="{{ url_for('auth.ucenter') }}">{{ current_user.username }} </a>，<a href="{{ url_for('auth.logout') }}">退出</a></h4></div>
+    {% else %}
+    <div class="panel panel-default">
+        <div class="panel panel-success">
+                <div class="panel-heading">
+                    <a data-toggle="collapse" data-parent="#accordion" href="/demo/bootstrap3-plugin-collapse-method.htm#collapseTwo">
+                        <h4 class="panel-title"><b class="caret"></b>&nbsp;用户登录说明</h4>
+                    </a>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse">
+                    <div class="panel-body ">
+                        <p>1.如有不懂可查看&nbsp;<a href="help"><strong>帮助</strong></a>&nbsp;</p>
+                        <p>2.提示登录成功后，请联系我进行启动代看</p>
+                        <p>3.微信 zh-12306  QQ:529459515</p>
+                    </div>
+                </div>
+        </div>
+
+        <form action="" method="post" class="form-horizontal" role="form">
+                {{form.hidden_tag()}}
+                <div class="form-group required">
+                    {{ form.uid.label(class='col-sm-2 control-label glyphicon glyphicon-user') }}
+                    <div class="col-sm-8" >
+                        {{ form.uid(class='form-control',  required='required', placeholder=form.uid.label.text)}}
+                    </div>
+                </div>
+                <div class="form-group required">
+                    {{ form.pwd.label(class='col-sm-2 control-label glyphicon glyphicon-lock') }}
+                    <div class="col-sm-8" >{{ form.pwd(class='form-control', required='required', placeholder=form.pwd.label.text)}}</div>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox col-sm-offset-2 col-sm-8">
+                        <label>
+                        {{ form.remember_me()}}{{ form.remember_me.label(style='padding-left: 0px;') }}
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-8">
+                        {{ form.submit(class='btn btn-lg btn-primary btn-block') }}
+                    </div>
+                    <div class="col-sm-offset-2 col-sm-8" style="margin-top: 10px;">
+                        <a href="{{ url_for('auth.register', next=request.args.get('next'))}}">还没有帐号？点我注册</a>
+                    </div>
+                </div>
+            </form>
+
+    </div>
+    {% endif %}
+
+{% endblock %}

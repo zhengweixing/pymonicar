@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-cn" >
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" />
+    {% block head %}
+    <title>{% block title %}{{title}}{% endblock %}</title>
+    {% endblock %}
+</head>
+<body>
+    <div id="admtop">
+    </div>
+    <div id="content" class="container">
+        <div id="body">
+            {% if info %}
+            <div class="alert alert-success">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <p>{{info}}</p>
+            </div>
+            {% endif %}
+            {% if error %}
+            <div class="alert alert-danger">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <p>{{error}}</p>
+            </div>
+            {% endif %}
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+    <footer id="footer" class="footer">
+        {% block footer %}
+        {% endblock %}
+    </footer>
+    <!-- <script src="{{bootstrap_find_resource('jquery.js', cdn='jquery')}}"></script>
+    <script src="{{bootstrap_find_resource('js/bootstrap.js', cdn='bootstrap')}}"></script>-->
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    {% if modal %}
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+       aria-labelledby="myModalLabel" aria-hidden="true">
+       <div class="modal-dialog">
+          <div class="modal-content">
+             <div class="modal-header">
+                <button type="button" class="close"
+                   data-dismiss="modal" aria-hidden="true">
+                      &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                   {{modal['title']}}
+                </h4>
+             </div>
+             <div class="modal-body">
+                {{modal['message'] | safe}}
+             </div>
+             <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                {% if modal['buttons'] %}
+                  {% for button in modal['buttons'] %}
+                      {{ button | safe }}
+                  {% endfor %}
+                {% endif %}
+             </div>
+          </div>
+       </div>
+    </div>
+     <script>$('#myModal').modal();</script>
+    {% endif %}
+    <script>
+        {% block script %}
+        {% endblock %}
+    </script>
+</body>
+</html>

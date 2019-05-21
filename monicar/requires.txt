@@ -1,0 +1,67 @@
+Flask
+Flask-Login
+wechatpy
+Flask-WTF
+flask-bootstrap
+flask-script
+flask_nav
+pymsql
+flask-sqlalchemy
+pyquery
+
+
+{
+   "button":[
+       {
+           "type":"click",
+           "name":"新增学员",
+           "key":"addstudent"
+       },
+
+       {
+           "name":"学员管理",
+           "sub_button":[
+               {
+                   "type":"click",
+                   "name":"后缴费学员",
+                   "key":"houjiaofei"
+               },
+               {
+                   "type":"click",
+                   "name":"已缴费学员",
+                   "key":"yijiaofei"
+               },
+               {
+                   "type":"click",
+                   "name":"已完成学员",
+                   "key":"yiwancheng"
+               },
+               {
+                   "type":"click",
+                   "name":"未缴费学员",
+                   "key":"weijiaofei"
+               },
+               {
+                   "type":"click",
+                   "name":"未完成学员",
+                   "key":"weiwancheng"
+               }
+           ]
+      },
+       {
+           "name":"使用帮助 ",
+           "sub_button":[
+               {
+                   "type":"click",
+                   "name":"绑定",
+                   "key":"bind"
+               },
+               {
+                   "type":"view",
+                   "name":"帮助",
+                   "url":"http://wx.ashufa.com/help"
+               }
+           ]
+      }
+   ]
+}

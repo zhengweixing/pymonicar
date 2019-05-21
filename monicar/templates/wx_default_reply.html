@@ -1,0 +1,22 @@
+{% block body %}{% if students %}学员验证情况如下：
+================={% for student in students %}{% if student['state'] %}
+{{student['StuName']}} TEL: {{student['Phone']}}
+{{student['DrsName']}}{% else %}
+{{student['stuid']}}
+{{student['msg']}}{% endif %}
+----------------------{% endfor %}{% if resmsg %}
+
+学员存储情况如下：
+================={% for rm in resmsg %}
+{{rm}}
+----------------------{% endfor %}{% endif %}{% elif students==False %}
+请重发，试试！{% endif %}{% endblock %}{% if not students %}
+=================
+发送身份证号码即可添加到系统里，查询学时
+{% endif %}
+=================
+添加成功后，需加我微信缴费，方可启动代看学时！
+如有疑问，请咨询:
+微信:zh-12306
+Q  Q:529459515
+电话:15899912449

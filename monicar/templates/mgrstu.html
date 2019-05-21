@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% import "_macros.html" as macros %}
+{% block head %}
+    {{ super()}}
+     <style>
+		.badge { background-color:green; }
+        .well { margin-bottom:5px; }
+	 </style>
+{% endblock %}
+{% block content %}
+   <div class="list-group-item active">
+      <h4 class="glyphicon glyphicon-th-list list-group-item-heading">
+         {{title}}
+      </h4>
+   </div>
+   {% if pagination %}
+    <h6><small>第{{ pagination.page }}页  共:{{ pagination.total }}人</small></h6>
+    <ul class="list-group" id="accordion">
+       {% for student in students %}
+             <li class="list-group-item">
+                <span class="badge">{{ student['complete_time'] }}</span>
+                <a data-toggle="collapse"  data-parent="#accordion" href="#collapse{{student['id']}}">
+                 <p class="glyphicon glyphicon glyphicon-play">{{ student['name'].ljust(4,'　') }}</p>
+                </a>
+             </li>
+             <div id="collapse{{student['id']}}" class="panel-collapse collapse">
+                <div class="well text-muted">
+                    <p>网站：{{ "悦驾网" if student.citycode == "121000" else "车尚网" }}</p>
+                    <p>电话：{{ student['tel'] }}</p>
+                    <p>身份证：{{ student['student_id'] }}</p>
+                    <p>添加人：{{ student.user['username'] }}</p>
+                    <p>添加人邮：{{ student.user['email'] }}</p>
+                    <p>{{ student['School']}}</p>
+                    {% if current_user and current_user.is_authenticated and current_user.is_admin() %}
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#LoginModal" data-stuid="{{student['id']}}">缴费</button>
+                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#LoginModal" data-stuid="{{student['id']}}">后缴费</button>
+                        <button type="button" class="btn btn-default" data-stuid="{{student['id']}}">未缴费</button>
+                    </div>
+                    {% endif %}
+                </div>
+             </div>
+       {% endfor %}
+   </ul>
+    {{ macros.pagination_widget(pagination, '.mgr_stu') }}
+    {% endif %}
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">提示</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="msg"></div>
+                    <div style="margin:10px;">
+                        <img id="checkCode"/>
+                        <input id="checkCodeVal" style="display:inline-block; width:inherit" type="text" class="form-control" placeholder="请输入验证码"/>
+                    </div>
+                    <input id="stuid" type="hidden"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-danger" id="start">确定</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+{% endblock %}
+
+{% block script %}
+$(document).ready(function(){
+
+  function get_check_code(){
+      $('#msg').html('');
+      $('#checkCodeVal').val('');
+      $('#checkCode').attr("src", "check_code?from=cheshang&r=" + Math.random());
+  }
+
+  $('#checkCode').click(function(){
+      get_check_code();
+  });
+
+  $('#LoginModal').on('show.bs.modal', function(e) {
+      get_check_code();
+      var invoker = $(e.relatedTarget);
+      stuid = invoker.data('stuid');
+      $('#stuid').val(stuid);
+
+  });
+
+  $('#start').click(function(){
+      checkCode = $('#checkCodeVal').val();
+      stuId = $('#stuid').val();
+      $.post('/mgr_stu', {stuid: stuId, checkcode: checkCode}, function(data){
+          if(data.result){
+              $('#msg').html('<div class="alert alert-warning"><a href="#" class="close" data-dismiss="alert">&times;</a>' + data.msg + "</div>");
+          }else{
+              $('#msg').html('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert">&times;</a>' + data.msg + "</div>");
+          }
+      }, 'json');
+  });
+
+});
+{% endblock%}

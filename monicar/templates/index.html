@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block head %}
+    {{ super()}}
+     <style>
+		div#marqueeBox{
+			text-align: center;
+			overflow:hidden;
+		}
+		#content{
+			background-color:rgb(215, 75, 40);
+			width:100%
+		}
+		#marqueeBox a{
+		  font-size: 22px;
+          color: #fff;
+		}
+	 </style>
+{% endblock %}
+
+{% block content %}
+<div style="padding: 0px 0px 20px 0px;text-align: center;">
+    <div class="adbox" style="line-height: 25px;margin:5px 0px 5px 0px"></div>
+    <div class="download text-align: center;">
+			<p style="font-size:22px;font-weight:bold;color:#FFFF00">东莞悦驾网24学时代学代挂</p>
+			<p style="font-size:22px;font-weight:bold;color:#FFFF00">扫描下方微信公众号二维码</p>
+			<p style="font-size:22px;font-weight:bold;color:#FFFF00">直接向其发送身份证号</p>
+			<p style="font-size:22px;font-weight:bold;color:#FFFF00">然后联系我启动</p>
+			<p><span style="margin:10px;color:#FFFF00"><b>QQ:</b>529459515</span><span style="margin:10px;color:#FFFF00"><b>TEL:</b>15899912449</span></p>
+		    <p><img src="/static/fuwuhao.jpg"/></p>
+	</div>
+</div>
+{% endblock %}
+
+{% block script %}
+	    var marqueeContent=new Array();
+		marqueeContent[0]="<a href=#>张谋添(3505***455X)完成!</a>";
+		marqueeContent[1]="<a href=#>聂启良(4206***6132)完成!</a>";
+		marqueeContent[2]="<a href=#>李飞(4304***8979)完成!</a>";
+		marqueeContent[3]="<a href=#>王青海(4104***3813)完成!</a>";
+		marqueeContent[4]="<a href=#>温子健(4453***219X)完成!</a>";
+		var marqueeInterval=new Array();
+		var marqueeId=0;
+		var marqueeDelay=2000;
+		var marqueeHeight=25;
+		function initMarquee() {
+			 var str=marqueeContent[0];
+			 $(".adbox").html('<div id="marqueeBox" style="height:'+marqueeHeight+'px" onmouseover="clearInterval(marqueeInterval[0])" onmouseout="marqueeInterval[0]=setInterval(\'startMarquee()\',marqueeDelay)"><div>'+str+'</div></div>');
+			 marqueeId++;
+			 marqueeInterval[0]=setInterval("startMarquee()",marqueeDelay);
+		}
+		function startMarquee() {
+			 var str=marqueeContent[marqueeId];
+			 marqueeId++;
+			 if(marqueeId>=marqueeContent.length)
+				 marqueeId=0;
+			 if(document.getElementById("marqueeBox").childNodes.length==1) {
+				 var nextLine=document.createElement('DIV');
+				 nextLine.innerHTML=str;
+				 document.getElementById("marqueeBox").appendChild(nextLine);
+			 }
+			 else {
+					document.getElementById("marqueeBox").childNodes[0].innerHTML=str;
+					document.getElementById("marqueeBox").appendChild(document.getElementById("marqueeBox").childNodes[0]);
+					document.getElementById("marqueeBox").scrollTop=0;
+			}
+		    clearInterval(marqueeInterval[1]);
+		    marqueeInterval[1]=setInterval("scrollMarquee()",20);
+		}
+		function scrollMarquee() {
+		   document.getElementById("marqueeBox").scrollTop++;
+		   if(document.getElementById("marqueeBox").scrollTop%marqueeHeight==(marqueeHeight-1)){
+		       clearInterval(marqueeInterval[1]);
+		   }
+		}
+		initMarquee();
+{% endblock %}
+
+{% block footer %}
+<div style="text-align: center;background-color: #e8e8e8">
+	<P>悦驾网24小时学时代看</p>
+	<p>六天看完，人工代看</p>
+	<p>
+		<a href="http://ci.ashufa.com/index.php/download/android/" rel="external">
+			安桌手下载
+		</a>
+		<a href="http://ci.ashufa.com/index.php/download/ios/" rel="external">
+			越狱苹果下载
+		</a>
+	</p>
+	<p><a target="blank" href="http://monicar.ashufa.com/">学车网</a>&nbsp;
+		<a target="blank" href="http://www.ashufa.com">书法网</a>&nbsp;
+		<a target="blank" href="http://shop.ashufa.com">商场</a>&nbsp;
+		<a target="blank" href="http://car.ashufa.com">车姆在线</a>
+	</p>
+	<p>Copyright © 2014-2025 monicar</p>
+</div>
+{% endblock %}

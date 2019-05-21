@@ -1,0 +1,6 @@
+以下是{{ title }},共计：{{ pagination.total }} 人
+{% if students %}{% for student in students %}
+{{student['name'].ljust(4,'　')}}  {{student['tel']}}  [{{student['complete_time']}}]
+{% endfor %}{% if not pagination.has_next %}
+以上列出所有
+{% else %}  ......  {% endif %}{% endif %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+{% if current_user.is_authenticated %}
+<div class="well">&nbsp;您好, {{ current_user.username }}，<a href="{{ url_for('auth.logout') }}">退出</a></div>
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title glyphicon glyphicon-user">&nbsp;用户信息</h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped">
+       <tbody>
+          <tr><td>用户名</td><td>{{ current_user.username }}</td></tr>
+          <tr><td>电话</td><td>{{ current_user.phone }}</td></tr>
+          <tr><td>邮箱</td><td>{{ current_user.email }}</td></tr>
+          <tr><td>价格</td><td>{{ current_user.price }}</td></tr>
+          <tr><td>企业平台</td><td>{{ current_user.qywechatid }}</td></tr>
+          <tr><td colspan="2">公众平台</td></tr>
+          <tr><td colspan="2">{{ current_user.gzwechatid }}</td></tr>
+       </tbody>
+   </table>
+    </div>
+    <div class="panel-heading">
+        <h3 class="glyphicon glyphicon-align-justify panel-title">&nbsp;用户组：{{ current_user.role.name }}</h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped">
+       <tbody>
+          <tr><td>新增学员</td><td>{{ current_user.can_add_stu() }}</td><td>添加新的学员权限</td></tr>
+          <tr><td>启动学员</td> <td>{{ current_user.can_start_stu() }}</td><td>启动学员的权限</td></tr>
+          <tr><td>管理员</td><td>{{ current_user.is_admin() }}</td><td>所有权限</td></tr>
+       </tbody>
+    </table>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

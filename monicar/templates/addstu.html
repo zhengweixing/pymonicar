@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block content %}
+<!--<div class="panel panel-default">-->
+    <div>
+        {% if not current_user.is_authenticated %}
+        <div class="alert alert-warning alert-dismissable">
+           <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+           请使用悦驾网帐号登录，长期合作的教练驾校，请先<a href="/login?next=/add_stu">登录</a>后再新增！
+        </div>
+        {% endif %}
+        <div class="panel panel-default">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <a data-toggle="collapse" data-parent="#accordion" href="/demo/bootstrap3-plugin-collapse-method.htm#collapseOne">
+                        <h4 class="panel-title"><b class="caret"></b>&nbsp;点击展开登录说明</h4>
+                    </a>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse">
+                    <div class="panel-body ">
+                        <p>1.请直接用悦驾网或车尚网帐号登录！身份证号+后六位</p>
+                        <p>2.提示新增成功后，请联系我进行缴费启动代看,否则只是从官网获取到学员信息，并没有启动系统！</p>
+                        <p>3.联系我请加微信 zh-12306  QQ:<a href="tencent://message/?uin=529459515">529459515</a></p>
+                        <p>4.你也可以使用微信公众号添加学员，请查看<a href="/help">详细教程</a></p>
+                        <p>5.本网站已在公安部备案（粤ICP备14053437号），严格保护学员信息，请放心使用！</p>
+                    </div>
+                </div>
+            </div>
+            <form action=""  method="post" class="form-horizontal" role="form">
+            {{form.hidden_tag()}}
+            <div class="form-group required">
+                {{ form.uid.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-8">
+                {{ form.uid(class='form-control',  required='required', placeholder=form.uid.label.text)}}
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form.pwd.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-8">
+                {{ form.pwd(class='form-control', required='required', placeholder='默认为身份证后六位')}}
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form.xue_shi_type.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-8">
+                {{ form.xue_shi_type(class='form-control', required='required') }}
+                </div>
+            </div>
+            <div id='checkCodeBox' class="form-group">
+                {{ form.check_code.label(class="col-sm-2 control-label") }}
+                <div class="col-sm-8">
+                    <img id="checkCode"/>
+                    {{ form.check_code(class='form-control', style='margin-top:3px;') }}
+                </div>
+            </div>
+            <div  style="padding:0px;" class="col-sm-offset-1 col-sm-9 panel panel-default">
+                <div class="panel-heading" style="background-color: white;">
+                    <a data-toggle="collapse" data-parent="#accordion" href="/demo/bootstrap3-plugin-collapse-method.htm#collapseTwo">
+                        <h4 class="panel-title"><b class="caret"></b>&nbsp;未激活则填写学习卡的帐号</h4>
+                    </a>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="alert alert-danger">如果你没有激活，则需要填写驾校发的学习卡上的帐号和密码，进行激活！<br/>*注意A与R，零与字母O的区别</div>
+                        <div style="padding:0px 15px 0px 15px;" class="form-group">
+                            {{ form.card_no.label }}
+                            <div style="margin-bottom: 15px;">{{ form.card_no(class='form-control', placeholder=form.card_no.label.text)}}</div>
+                            {{ form.card_pwd.label(class='control-label') }}
+                            <div>{{ form.card_pwd(class='form-control', placeholder=form.card_pwd.label.text)}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <!--<div class="col-md-6 column">
+                    <button type="reset" class="btn btn-lg btn-block btn-danger">重置</button>
+                </div>-->
+                <div class="col-sm-offset-1 col-sm-9">
+                    {{ form.submit(class='btn btn-lg btn-primary btn-block') }}
+                </div>
+            </div>
+        </form>
+        </div>
+    </div>
+ <!--</div>-->
+{% endblock %}
+
+{% block script %}
+$(document).ready(function(){
+  $("#uid").blur(function(){
+     uid = $("#uid").val();
+     $("#pwd").val(uid.substr(uid.length-6,6));
+  });
+
+  function get_check_code(){
+      $('#checkCode').attr("src", "check_code?from=cheshang&r=" + Math.random());
+      $('#checkCodeBox').css('display','block');
+  }
+
+  function show_checkCode(){
+     type = $("#xue_shi_type").val();
+     if(type==1){
+         get_check_code();
+     }else{
+        $('#checkCodeBox').css('display','none');
+     }
+  }
+
+  $('#checkCode').click(function(){
+      get_check_code();
+  });
+
+  $("#xue_shi_type").change(function(){
+      show_checkCode();
+  });
+
+  show_checkCode();
+
+});
+{% endblock%}
